@@ -40,7 +40,7 @@ class RadBIST:
 				self.gp.quad[i].get_pin(1).value = 0
 				self.gp.quad[i].get_pin(3).value = 0
 		time.sleep(0.2)
-		if quadno < 4:
+		if quadno < 3:
 			p = AnalogIn(board.LQ)
 		else:
 			p = AnalogIn(board.RQ)
