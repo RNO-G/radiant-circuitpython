@@ -5,6 +5,8 @@ class RadFPGA:
 	def __init__(self, uart):
 		self.dev = uart
 		self.dev.baudrate = 1000000
+		# reset
+		self.dev.write(bytearray(4))
 
 	def spi_cs(self, device, state):
 		self.write(36, state)
