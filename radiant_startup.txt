@@ -1,0 +1,46 @@
+Programming DACs:
+	import assigndac
+	assigndac.setup()
+		
+
+
+1: Don't even need to bother with checking for clock at power on, it already is
+2: Need to check if GPIOs are configured
+	
+3: However, at power on, need to configure CPLDs
+	# get FPGA
+	dev = RadFPGA(board.UART())
+	# enable JTAG??
+	dev.write(0x14, 0x80000000)
+	# get left/right
+	cpl = RadCPLD(dev, 0x1C)
+	cpl.configure("debug4.bit")
+	cpr = RadCPLD(dev, 0x20)
+	cpr.configure("debug4.bit")
+
+CPLD register:
+
+bit[7]   : BIST
+bit[6:4] : in BIST mode, set WR[2:0] to these values
+bit[3:0] : select this lab
+
+RADIANTv2 GPIO addresses:
+•	QUAD0 (ch0-3): 011_1000 = 0x38
+•	QUAD1 (ch4-7): 011_1100 = 0x3C
+•	QUAD2 (ch8-11): 011_1010 = 0x3A
+•	QUAD3 (ch12-15): 011_1110 = 0x3E
+•	QUAD4 (ch16-19): 011_1001 = 0x39
+•	QUAD5 (ch20-23): 011_1101 = 0x3D
+•	QUAD6 (signal gen): 011_1011 = 0x3B
+The assigndac code first:
+1.	Sets OCR to 0x8  (all low except bit 3)
+2.	Sets TSCR to 0x0x8 (all non-tristate except bit 3)
+3.	Sets GCR to 0xC0 (bits 7/6 are inputs, all else outputs)
+On the RADIANTv2 this corresponds to
+[0x01,0x08]
+[0x03,0xC0]
+RADIANT I2C addresses:
+110_0000 = 0x60 (VPED 0-11)
+110_0001 = 0x61 (VPED 12-23)
+110_0010 = 0x62 (quad 0)
+110_0011 = 0x63 (quad 1)
