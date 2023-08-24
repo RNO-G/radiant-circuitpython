@@ -18,6 +18,7 @@ class RadClock:
 		self.dev.writeto(self.addr, bytes([0xFF,0x0]), stop=True)
 		self.dev.unlock()
 		self.page = 0
+		self.clock_rate=2400
 
 	def configure(self, fn):
 		# TODO: properly catch it if it's not there

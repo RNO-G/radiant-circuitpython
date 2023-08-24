@@ -8,4 +8,5 @@ if VCC.core.poweron:
 	VCC.fpga(True)
 	i2c = board.I2C()
 	ck = RadClock(i2c)
-	ck.configure("intclock25.dat")
+	if(ck.clock_rate==3200): ck.configure("intclock25.dat")
+	else: ck.configure("intclock18_75.dat")
